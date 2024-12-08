@@ -1,0 +1,88 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define global environment variables
+        DOCKER_REGISTRY = 'your-docker-registry'
+        KUBEFLOW_PIPELINE_PATH = './kubeflow/fraud_detection_pipeline.yaml'
+        KUBECTL_CONFIG = '/root/.kube/config'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Checkout source code from the repository
+                git 'https://github.com/your-repo/mlops-self-healing-pipeline.git'
+            }
+        }
+
+        stage('Build and Push Docker Images') {
+            steps {
+                script {
+                    // Build Docker images for all pipeline components
+                    sh '''
+                    docker build -t $DOCKER_REGISTRY/data-prep ./scripts
+                    docker build -t $DOCKER_REGISTRY/model-training ./scripts
+                    docker build -t $DOCKER_REGISTRY/model-validation ./scripts
+                    docker build -t $DOCKER_REGISTRY/model-deployment ./scripts
+                    docker push $DOCKER_REGISTRY/data-prep
+                    docker push $DOCKER_REGISTRY/model-training
+                    docker push $DOCKER_REGISTRY/model-validation
+                    docker push $DOCKER_REGISTRY/model-deployment
+                    '''
+                }
+            }
+        }
+
+        stage('Upload Kubeflow Pipeline') {
+            steps {
+                script {
+                    // Upload pipeline to Kubeflow
+                    sh '''
+                    kfp pipeline upload --pipeline-file $KUBEFLOW_PIPELINE_PATH --name Fraud_Detection_Pipeline
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy Kubernetes Resources') {
+            steps {
+                script {
+                    // Apply Kubernetes resources
+                    sh '''
+                    kubectl apply -f ./kubeflow/components/data_prep.yaml
+                    kubectl apply -f ./kubeflow/components/training.yaml
+                    kubectl apply -f ./kubeflow/components/validation.yaml
+                    kubectl apply -f ./kubeflow/components/deployment.yaml
+                    '''
+                }
+            }
+        }
+
+        stage('Trigger Pipeline') {
+            steps {
+                script {
+                    // Trigger the Kubeflow pipeline
+                    sh '''
+                    kfp run submit --pipeline-name Fraud_Detection_Pipeline
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline execution completed successfully!'
+        }
+        failure {
+            mail to: 'alerts@example.com',
+                 subject: 'Pipeline Failure: Jenkins Job',
+                 body: 'The pipeline execution failed. Please check the logs.'
+        }
+    }
+}
