@@ -1,0 +1,44 @@
+{
+  "dashboard": {
+    "title": "Fraud Detection Monitoring",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Fraud Prediction Probability",
+        "targets": [
+          {
+            "expr": "fraud_prediction_probability",
+            "legendFormat": "Probability"
+          }
+        ],
+        "id": 1
+      },
+      {
+        "type": "stat",
+        "title": "Prediction Request Count",
+        "targets": [
+          {
+            "expr": "fraud_prediction_requests_total",
+            "legendFormat": "Requests"
+          }
+        ],
+        "id": 2
+      },
+      {
+        "type": "graph",
+        "title": "API Request Duration",
+        "targets": [
+          {
+            "expr": "request_processing_seconds_sum / request_processing_seconds_count",
+            "legendFormat": "Duration (s)"
+          }
+        ],
+        "id": 3
+      }
+    ],
+    "time": {
+      "from": "now-15m",
+      "to": "now"
+    }
+  }
+}
