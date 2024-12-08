@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: data-prep
+spec:
+  containers:
+    - name: data-prep
+      image: python:3.9-slim
+      command:
+        - python
+        - /scripts/data_ingestion.py
+      volumeMounts:
+        - name: pipeline-scripts
+          mountPath: /scripts
+      env:
+        - name: INPUT_DATA_PATH
+          value: /data/processed
+        - name: OUTPUT_FEATURES_PATH
+          value: /data/features
+  volumes:
+    - name: pipeline-scripts
+      hostPath:
+        path: /mnt/scripts # Ensure your script directory is mounted

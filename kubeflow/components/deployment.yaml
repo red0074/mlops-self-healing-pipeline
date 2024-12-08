@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-deployment
+spec:
+  containers:
+    - name: model-deployment
+      image: python:3.9-slim
+      command:
+        - python
+        - /scripts/deploy_model.py
+      volumeMounts:
+        - name: pipeline-scripts
+          mountPath: /scripts
+        - name: model-files
+          mountPath: /models
+  volumes:
+    - name: pipeline-scripts
+      hostPath:
+        path: /mnt/scripts
+    - name: model-files
+      hostPath:
+        path: /mnt/models

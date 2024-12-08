@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-validation
+spec:
+  containers:
+    - name: model-validation
+      image: python:3.9-slim
+      command:
+        - python
+        - /scripts/model_validation.py
+      volumeMounts:
+        - name: pipeline-scripts
+          mountPath: /scripts
+      env:
+        - name: MODEL_PATH
+          value: /models/fraud_model.pth
+        - name: DATA_PATH
+          value: /data/features/engineered_fraud_data.parquet
+        - name: PREPROCESSOR_PATH
+          value: /data/features/feature_preprocessor.joblib
+  volumes:
+    - name: pipeline-scripts
+      hostPath:
+        path: /mnt/scripts

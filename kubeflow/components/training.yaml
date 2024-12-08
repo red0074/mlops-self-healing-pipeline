@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-training
+spec:
+  containers:
+    - name: model-training
+      image: python:3.9-slim
+      command:
+        - python
+        - /scripts/model_training.py
+      volumeMounts:
+        - name: pipeline-scripts
+          mountPath: /scripts
+        - name: model-output
+          mountPath: /models
+      env:
+        - name: DATA_PATH
+          value: /data/features/engineered_fraud_data.parquet
+        - name: MODEL_OUTPUT_PATH
+          value: /models
+  volumes:
+    - name: pipeline-scripts
+      hostPath:
+        path: /mnt/scripts
+    - name: model-output
+      hostPath:
+        path: /mnt/models
