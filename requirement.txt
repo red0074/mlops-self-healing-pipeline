@@ -1,0 +1,52 @@
+# Core Libraries
+pandas==1.5.3                # For data manipulation
+numpy==1.24.3                # For numerical operations
+scipy==1.11.3                # For statistical tests like KS test
+
+# Machine Learning and Deep Learning
+scikit-learn==1.3.1          # For metrics and model validation
+torch==2.0.1                 # For building and training PyTorch models
+mlflow==2.6.0                # For experiment tracking and artifact management
+
+# Data Validation
+great-expectations==0.17.10  # For data validation and quality checks
+
+# API and Deployment
+fastapi==0.100.0             # For building the REST API
+uvicorn==0.23.2              # For serving the FastAPI application
+gunicorn==20.1.0             # Optional: For production-ready API hosting
+
+# Monitoring and Logging
+prometheus-client==0.16.0    # For exposing metrics to Prometheus
+loguru==0.7.0                # For structured logging
+
+# Orchestration and Workflow Management
+apache-airflow==2.7.1        # For DAG and workflow management
+kfp==1.8.13                  # Kubeflow Pipelines SDK
+
+# Model Serialization and Feature Engineering
+joblib==1.3.1                # For saving preprocessing pipelines
+pyarrow==13.0.0              # For efficient data storage in Parquet format
+
+# Data Visualization (Optional)
+matplotlib==3.7.2            # For visualization during debugging or exploratory analysis
+seaborn==0.12.2              # For enhanced visualizations
+
+# Cloud and Storage (Optional)
+boto3==1.28.0                # AWS S3 interaction for data storage
+google-cloud-storage==2.14.0 # GCP storage interaction
+
+# Drift Detection and Statistical Testing
+statsmodels==0.14.0          # For drift detection tests like KS test
+pyod==1.0.9                  # For anomaly detection (optional)
+
+# OpenAI Integration
+openai==0.27.10              # For GPT-based intelligent debugging
+
+# Containerization and System Tools (Optional)
+docker==6.1.2                # For managing Docker containers
+kubernetes==26.1.0           # For interacting with Kubernetes
+
+# Miscellaneous
+requests==2.31.0             # For API interactions (e.g., Prometheus queries)
+pydantic==1.10.12            # For data validation in FastAPI
