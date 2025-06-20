@@ -12,7 +12,7 @@ This MLOps project implements a self-healing fraud detection system using machin
 
 ## Setup Instructions
 1. Install dependencies: `pip install -r requirements.txt`
-2. Set up cloud credentials for AWS/Azure
+2. Set up cloud credentials for AWS
 3. Configure Kubernetes and Airflow
 4. Run initialization scripts
 
